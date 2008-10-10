@@ -1,0 +1,17 @@
+@import '/www/style/html/xhtml';
+
+.PASS {
+  background-color: green;
+}
+
+.FAIL {
+  background-color: red;
+}
+
+.SKIPPED {
+  color: gray;
+}
+
+td {
+  font-size: xx-small;
+}
