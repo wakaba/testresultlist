@@ -20,7 +20,7 @@ $path = '' unless defined $path;
 
 my @path = split m#/#, percent_decode ($path), -1;
 
-if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
+if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
   my $table_id = $path[1];
     
   if ($path[2] eq 'all') {
@@ -39,8 +39,19 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
 <a href=info>@{[htescape ($table->{info}->{label} || $table_id)]}</a></h1>
 
 <table><thead><tr><th scope=col>Test];
+
+      ## NOTE: Ummm...  We need two-pass process...
+      my @envs;
+      my %has_env;
+      for my $test_id (keys %{$tests}) {
+        for my $env_id (keys %{$tests->{$test_id}->{result} or {}}) {
+          push @envs, $env_id unless $has_env{$env_id};
+          $has_env{$env_id} = 1;
+        }
+      }
+      @envs = sort {$a <=> $b} @envs;
     
-      for my $env_id (sort {$a <=> $b} keys %{$envs}) {
+      for my $env_id (@envs) {
         print q[<th scope=col>], htescape ($envs->{$env_id}->{label} ||
                                            $envs->{$env_id}->{name});
       }
@@ -57,7 +68,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
                                $tests->{$test_id}->{name});
         print q[</a>];
         
-        for my $env_id (sort {$a <=> $b} keys %{$envs}) {
+        for my $env_id (@envs) {
           my $result = $tests->{$test_id}->{result}->{$env_id};
 
           unless ($result->{class}) {
@@ -83,7 +94,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
                    ['count', 'Total']) {
         print q[<tr><th scope=row>], htescape ($bbb->[1]);
 
-        for my $env_id (sort {$a <=> $b} keys %{$envs}) {
+        for my $env_id (@envs) {
           print q[<td>], (0+$stat->{$env_id}->{$bbb->[0]});
           print ' (', get_percentage ($stat->{$env_id}->{$bbb->[0]},
                                       $stat->{$env_id}->{count}), '%)'
@@ -154,7 +165,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
       exit;
     }
   }
-} elsif (@path == 2 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
+} elsif (@path == 2 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
   if ($cgi->request_method eq 'POST') {
     my $table_id = $path[1];
     my $table = get_table ($table_id, lock => 1);
@@ -291,7 +302,7 @@ sub get_envs (%) {
   ## NOTE: |get_envs| must be invoked after |get_table|, to avoid
   ## deadlocks.
 
-  my $envs_file_name = $data_dir_name . 'test-envs.dat';
+  my $envs_file_name = $data_dir_name . '_test-envs.dat';
 
   if ($opt{lock}) {
     our $envs_lock;
@@ -311,7 +322,7 @@ sub get_envs (%) {
 sub set_envs ($) {
   my $envs = shift;
   
-  my $envs_file_name = $data_dir_name . 'test-envs.dat';
+  my $envs_file_name = $data_dir_name . '_test-envs.dat';
   
   store $envs, $envs_file_name or die "$0: $envs_file_name: $!";
 } # set_envs
