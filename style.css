@@ -12,6 +12,10 @@
   color: gray;
 }
 
-td {
+tbody td {
   font-size: xx-small;
+}
+
+tfoot td {
+  text-align: right;
 }

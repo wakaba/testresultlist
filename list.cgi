@@ -29,7 +29,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
     if ($table) {
       my $envs = get_envs ();
       my $tests = $table->{tests} || {};
-      
+
       print qq[Content-Type: text/html; charset=utf-8
 
 <!DOCTYPE HTML>
@@ -45,6 +45,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
                                            $envs->{$env_id}->{name});
       }
 
+      my $stat;
       print q[<tbody>];
       
       for my $test_id (sort {$a cmp $b} keys %{$tests}) {
@@ -58,11 +59,35 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z]+\z/) {
         
         for my $env_id (sort {$a <=> $b} keys %{$envs}) {
           my $result = $tests->{$test_id}->{result}->{$env_id};
+
+          unless ($result->{class}) {
+            print q[<td>];
+            next;
+          }
           
           print q[<td class="];
           print scalar htescape ($result->{class} || '');
           print q[">];
           print scalar htescape ($result->{text} || '');
+
+          $stat->{$env_id}->{'class_' . ($result->{class} || '')}++;
+          $stat->{$env_id}->{count}++;
+        }
+      }
+
+      print q[<tfoot>];
+
+      for my $bbb (['class_PASS', 'Passed'],
+                   ['class_FAIL', 'Failed'],
+                   ['class_SKIPPED', 'Skipped'],
+                   ['count', 'Total']) {
+        print q[<tr><th scope=row>], htescape ($bbb->[1]);
+
+        for my $env_id (sort {$a <=> $b} keys %{$envs}) {
+          print q[<td>], (0+$stat->{$env_id}->{$bbb->[0]});
+          print ' (', get_percentage ($stat->{$env_id}->{$bbb->[0]},
+                                      $stat->{$env_id}->{count}), '%)'
+              unless $bbb->[0] eq 'count';
         }
       }
       
@@ -215,6 +240,13 @@ sub htescape ($) {
   $s =~ s/"/&quot;/g;
   return $s;
 } # htescape
+
+sub get_percentage ($$) {
+  my ($a, $b) = @_;
+  $b ||= 1;
+  
+  return int (100 * $a / $b);
+} # get_percentage
 
 use Storable qw/store retrieve/;
 
