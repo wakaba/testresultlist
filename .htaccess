@@ -1,6 +1,7 @@
 <Limit POST PUT DELETE>
-  Require user wakaba
+  Require group test-results
   AuthType Basic
-  AuthUserFile /home/wakaba/public_html/archive2/.htpasswd
-  AuthName "Test results (if you want an account, please mail <w@suika.fam.cx>)"
+  AuthUserFile /home/wakaba/public_html/pbin/accounts/data/htpasswd
+  AuthGroupFile /home/wakaba/public_html/pbin/accounts/data/htgroup
+  AuthName "test-results"
 </Limit>
