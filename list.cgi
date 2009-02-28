@@ -91,6 +91,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
       for my $bbb (['class_PASS', 'Passed'],
                    ['class_FAIL', 'Failed'],
                    ['class_SKIPPED', 'Skipped'],
+                   ['class_has', 'Has'],
                    ['count', 'Total']) {
         print q[<tr><th scope=row>], htescape ($bbb->[1]);
 
@@ -222,6 +223,9 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 </ul>];
     exit;
   }
+} elsif (@path == 2 and $path[0] eq '' and $path[1] eq '_dummy_') {
+  print "Content-Type: text/plain; charset=utf-8\n\n200";
+  exit;
 }
 
 print "Status: 404 Not Found\nContent-Type: text/plain\n\n404";
@@ -294,6 +298,9 @@ sub set_table ($$) {
   my $table_file_name = $data_dir_name . $table_id . '.dat';
   
   store $table, $table_file_name or die "$0: $table_file_name: $!";
+
+  system '/usr/bin/cvs', 'add', '-kb', $table_file_name;
+  system '/usr/bin/cvs', 'commit', '-m', '', $table_file_name;
 } # set_table
 
 sub get_envs (%) {
@@ -325,4 +332,7 @@ sub set_envs ($) {
   my $envs_file_name = $data_dir_name . '_test-envs.dat';
   
   store $envs, $envs_file_name or die "$0: $envs_file_name: $!";
+
+  system '/usr/bin/cvs', 'add', '-kb', $envs_file_name;
+  system '/usr/bin/cvs', 'commit', '-m', '', $envs_file_name;
 } # set_envs

@@ -1,6 +1,6 @@
 @import '/www/style/html/xhtml';
 
-.PASS {
+.PASS, .has {
   background-color: green;
 }
 
