@@ -64,8 +64,10 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 
         print q[<a href="], htescape ($table->{info}->{url_prefix} || ''),
             htescape ($tests->{$test_id}->{name}), q[">];
-        print scalar htescape ($tests->{$test_id}->{label} ||
-                               $tests->{$test_id}->{name});
+        my $label = htescape ($tests->{$test_id}->{label} ||
+                              $tests->{$test_id}->{name});
+        $label =~ s/\n/<br>/g;
+        print $label;
         print q[</a>];
         
         for my $env_id (@envs) {
@@ -197,8 +199,8 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 
       for my $i (0..$#test_name) {
         my $test = $table->{tests}->{$test_name[$i]} ||= {};
-        $test->{name} ||= $test_name[$i];
-        $test->{label} ||= $test_label[$i];
+        $test->{name} = $test_name[$i] || $test->{name};
+        $test->{label} = $test_label[$i] || $test->{label};
 
         my $result = {class => $test_class[$i],
                       text => Encode::decode ('utf-8', $test_result[$i])};
