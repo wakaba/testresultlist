@@ -50,7 +50,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
         }
       }
       @envs = sort {$a <=> $b} @envs;
-    
+
       for my $env_id (@envs) {
         print q[<th scope=col>], htescape ($envs->{$env_id}->{label} ||
                                            $envs->{$env_id}->{name});
@@ -77,10 +77,16 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
             print q[<td>];
             next;
           }
+
+          my $env_label = htescape ($envs->{$env_id}->{label} ||
+                                    $envs->{$env_id}->{name});
+          my $test_label = htescape ($tests->{$test_id}->{label} ||
+                                     $tests->{$test_id}->{name});
+          $test_label =~ s/\n/ \n/g;
           
           print q[<td class="];
           print scalar htescape ($result->{class} || '');
-          print q[">];
+          print qq[" title="$env_label \n$test_label">];
           print scalar htescape ($result->{text} || '');
 
           $stat->{$env_id}->{'class_' . ($result->{class} || '')}++;
