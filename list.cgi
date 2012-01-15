@@ -6,7 +6,7 @@ use lib file (__FILE__)->dir->subdir ('modules', 'manakai', 'lib')->stringify;
 use lib file (__FILE__)->dir->subdir ('modules', 'perl-charclass', 'lib')->stringify;
 use CGI::Carp qw[fatalsToBrowser];
 
-my $data_dir_name = 'data/';
+my $data_dir_name = file (__FILE__)->dir->subdir ('data')->absolute . '/';
 
 use Message::CGI::HTTP;
 my $cgi = Message::CGI::HTTP->new;
@@ -308,6 +308,7 @@ sub set_table ($$) {
   
   nstore $table, $table_file_name or die "$0: $table_file_name: $!";
 
+  chdir $data_dir_name;
   system '/usr/bin/cvs', 'add', '-kb', $table_file_name;
   system '/usr/bin/cvs', 'commit', '-m', '', $table_file_name;
 } # set_table
@@ -342,6 +343,7 @@ sub set_envs ($) {
   
   nstore $envs, $envs_file_name or die "$0: $envs_file_name: $!";
 
+  chdir $data_dir_name;
   system '/usr/bin/cvs', 'add', '-kb', $envs_file_name;
   system '/usr/bin/cvs', 'commit', '-m', '', $envs_file_name;
 } # set_envs
