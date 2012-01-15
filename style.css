@@ -19,3 +19,8 @@ tbody td {
 tfoot td {
   text-align: right;
 }
+
+th, td {
+  max-width: 20em;
+  overflow: hidden;
+}
