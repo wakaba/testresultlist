@@ -126,9 +126,8 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
       $table->{info}->{label} = get_string_parameter ('label');
       $table->{info}->{url_prefix} = get_string_parameter ('url-prefix');
 
+      print qq[Status: 200 Accepted\nContent-Type: text/plain; charset=utf-8\n\n];
       set_table ($table_id, $table);
-
-      print qq[Status: 204 Done.\n\n];
 
       exit;
     } else {
@@ -214,10 +213,9 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
         $test->{result}->{$env_id} = $result;
       }
 
+      print qq[Status: 200 Accepted\nContent-Type: text/plain; charset=utf-8\n\n];
       set_table ($table_id, $table);
       set_envs ($envs);
-
-      print qq[Status: 204 Done\n\n];
       
       exit;
     }
