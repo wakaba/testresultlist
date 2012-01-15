@@ -345,3 +345,12 @@ sub set_envs ($) {
   system '/usr/bin/cvs', 'add', '-kb', $envs_file_name;
   system '/usr/bin/cvs', 'commit', '-m', '', $envs_file_name;
 } # set_envs
+
+=head1 LICENSE
+
+Copyright 2008-2012 Wakaba <w@suika.fam.cx>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
