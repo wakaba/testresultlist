@@ -1,3 +1,9 @@
+Options +ExecCGI
+AddHandler cgi-script .cgi
+AddType text/html .cgi
+
+DirectoryIndex list
+
 <Limit POST PUT DELETE>
   Require group test-results
   AuthType Basic
@@ -5,3 +11,5 @@
   AuthGroupFile /home/wakaba/public_html/pbin/accounts/data/htgroup
   AuthName "test-results"
 </Limit>
+
+## License: Public Domain.

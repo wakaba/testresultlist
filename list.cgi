@@ -1,8 +1,9 @@
 #!/usr/bin/perl
 use strict;
-
-use lib qw[/home/httpd/html/www/markup/html/whatpm
-           /home/wakaba/work/manakai2/lib];
+use warnings;
+use Path::Class;
+use lib file (__FILE__)->dir->subdir ('modules', 'manakai', 'lib')->stringify;
+use lib file (__FILE__)->dir->subdir ('modules', 'perl-charclass', 'lib')->stringify;
 use CGI::Carp qw[fatalsToBrowser];
 
 my $data_dir_name = 'data/';
@@ -271,7 +272,7 @@ sub get_percentage ($$) {
   return int (100 * $a / $b);
 } # get_percentage
 
-use Storable qw/store retrieve/;
+use Storable qw/nstore retrieve/;
 
 sub get_table ($%) {
   my $table_id = shift;
@@ -305,7 +306,7 @@ sub set_table ($$) {
   
   my $table_file_name = $data_dir_name . $table_id . '.dat';
   
-  store $table, $table_file_name or die "$0: $table_file_name: $!";
+  nstore $table, $table_file_name or die "$0: $table_file_name: $!";
 
   system '/usr/bin/cvs', 'add', '-kb', $table_file_name;
   system '/usr/bin/cvs', 'commit', '-m', '', $table_file_name;
@@ -339,7 +340,7 @@ sub set_envs ($) {
   
   my $envs_file_name = $data_dir_name . '_test-envs.dat';
   
-  store $envs, $envs_file_name or die "$0: $envs_file_name: $!";
+  nstore $envs, $envs_file_name or die "$0: $envs_file_name: $!";
 
   system '/usr/bin/cvs', 'add', '-kb', $envs_file_name;
   system '/usr/bin/cvs', 'commit', '-m', '', $envs_file_name;
