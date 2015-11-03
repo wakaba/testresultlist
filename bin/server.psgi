@@ -48,6 +48,7 @@ return sub {
           warn "Bad CGI output: |$name|\n";
           $cgi_error = 1;
         } elsif ($name eq 'status') {
+          $value =~ s/^\s+//;
           my ($code, $reason) = split /\s+/, $value, 2;
           $app->http->set_status ($code, reason_phrase => $reason);
         } else {
