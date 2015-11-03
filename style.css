@@ -1,4 +1,5 @@
-@import '/www/style/html/xhtml';
+@import 'https://suikaweb.herokuapp.com/www/style/html/xhtml';
+@import 'http://suika.suikawiki.org/www/style/html/xhtml';
 
 .PASS, .has {
   background-color: green;

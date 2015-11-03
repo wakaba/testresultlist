@@ -23,6 +23,12 @@ if ($cgi->request_method eq 'POST') {
   exit;
 }
 
+if (@path == 2 and $path[0] eq '' and $path[1] eq 'style') {
+  print "Content-Type: text/css; charset=utf-8\n\n";
+  print path (__FILE__)->parent->child ('style.css')->slurp;
+  exit;
+}
+
 if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
   my $table_id = $path[1];
     
