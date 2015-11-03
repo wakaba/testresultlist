@@ -48,6 +48,18 @@ deps-data:
 	cd local && tar zxf cvs-pub.tar.gz
 	cd local/data1/cvs/pub/testresults/data && co *,v
 
+create-commit-for-heroku:
+	git remote rm origin
+	rm -fr deps/pmtar/.git deps/pmpp/.git modules/*/.git
+	git add -f deps/pmtar/* #deps/pmpp/*
+	#rm -fr ./t_deps/modules
+	#git rm -r t_deps/modules
+	git rm .gitmodules
+	git rm modules/* --cached
+	rm -fr local/data1/cvs/pub/testresults/data/*,v
+	git add -f modules/*/* local/data1/cvs/pub/testresults/data
+	git commit -m "for heroku"
+
 ## ------ Tests ------
 
 PROVE = ./prove
