@@ -24,6 +24,10 @@ return sub {
     $http->set_response_header
         ('Strict-Transport-Security' => 'max-age=2592000; includeSubDomains; preload');
 
+    if (@$path and $path->[0] eq 'list') {
+      shift @$path;
+    }
+
     my $cmd = Promised::Command->new ([$RootPath->child ('perl'), $RootPath->child ("list.cgi")]);
     $cmd->envs->{REQUEST_METHOD} = $app->http->request_method;
     $cmd->envs->{QUERY_STRING} = $app->http->original_url->{query};
