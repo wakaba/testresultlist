@@ -1,25 +1,27 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Path::Class;
-use lib file (__FILE__)->dir->subdir ('modules', 'manakai', 'lib')->stringify;
-use lib file (__FILE__)->dir->subdir ('modules', 'perl-charclass', 'lib')->stringify;
+use Path::Tiny;
 use CGI::Carp qw[fatalsToBrowser];
+use Wanage::URL qw(percent_decode_c);
 
-my $data_dir_name = file (__FILE__)->dir->subdir ('data')->absolute . '/';
+my $data_dir_name = path (__FILE__)->parent->child
+    ('local/data1/cvs/pub/testresults/data')->absolute . '/';
 
 use Message::CGI::HTTP;
 my $cgi = Message::CGI::HTTP->new;
-
-use Message::DOM::DOMImplementation;
-my $dom = Message::DOM::DOMImplementation->new;
 
 binmode STDOUT, ':utf8';
 
 my $path = $cgi->path_info;
 $path = '' unless defined $path;
 
-my @path = split m#/#, percent_decode ($path), -1;
+my @path = map { percent_decode_c $_ } split m{/}, $path, -1;
+
+if ($cgi->request_method eq 'POST') {
+  print "Status: 405 POST not allowed\n\n405 POST not allowed";
+  exit;
+}
 
 if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
   my $table_id = $path[1];
@@ -238,12 +240,6 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 print "Status: 404 Not Found\nContent-Type: text/plain\n\n404";
 exit;
 
-sub percent_decode ($) {
-  return $dom->create_uri_reference ($_[0])
-      ->get_iri_reference
-      ->uri_reference;
-} # percent_decode
-
 sub get_string_parameter ($) {
   my $value = $cgi->get_parameter ($_[0]);
   if (defined $value) {
@@ -348,7 +344,7 @@ sub set_envs ($) {
 
 =head1 LICENSE
 
-Copyright 2008-2012 Wakaba <w@suika.fam.cx>.
+Copyright 2008-2015 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
