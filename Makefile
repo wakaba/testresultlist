@@ -6,13 +6,23 @@ GIT = git
 
 updatenightly: local/bin/pmbp.pl
 	$(CURL) -s -S -L https://gist.githubusercontent.com/wakaba/34a71d3137a52abb562d/raw/gistfile1.txt | sh
-	$(GIT) add modules t_deps/modules
+	$(GIT) add modules
 	perl local/bin/pmbp.pl --update
 	$(GIT) add config
 
 ## ------ Setup ------
 
-deps: git-submodules pmbp-install deps-data
+deps: always
+	true # dummy for make -q
+ifdef PMBP_HEROKU_BUILDPACK
+else
+	$(MAKE) git-submodules
+endif
+	$(MAKE) pmbp-install
+ifdef PMBP_HEROKU_BUILDPACK
+else
+	$(MAKE) deps-data
+endif
 
 git-submodules:
 	$(GIT) submodule update --init
@@ -47,6 +57,8 @@ test: test-deps test-main
 test-deps: deps
 
 test-main:
-	$(PROVE) t/*.t
+	#$(PROVE) t/*.t
+
+always:
 
 ## License: Public Domain.
