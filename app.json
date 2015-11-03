@@ -1,0 +1,7 @@
+{
+  "name": "testresultlist",
+  "website": "https://testresultlist.herokuapp.com/",
+  "buildpacks": [
+    {"url": "https://github.com/wakaba/heroku-buildpack-perl-pmbp"}
+  ]
+}
