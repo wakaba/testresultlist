@@ -8,6 +8,17 @@ use Wanage::URL qw(percent_decode_c);
 my $data_dir_name = path (__FILE__)->parent->child
     ('local/data1/cvs/pub/testresults/data')->absolute . '/';
 
+my $Footer = q{
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-39820773-4', 'manakai.github.io');
+ga('send', 'pageview');
+</script>
+};
+
 use Message::CGI::HTTP;
 my $cgi = Message::CGI::HTTP->new;
 
@@ -124,7 +135,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 
 <footer>[<a href=info>Info</a>]
 [<a href=all>All results</a>]</footer>];
-      
+      print $Footer;
       exit;
     }
   } elsif ($path[2] eq 'info') {
@@ -178,7 +189,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 
 <footer>[<a href=info>Info</a>]
 [<a href=all>All results</a>]</footer>];
-      
+      print $Footer;
       exit;
     }
   }
@@ -236,6 +247,7 @@ if (@path == 3 and $path[0] eq '' and $path[1] =~ /\A[0-9a-z-]+\z/) {
 <li><a href=all>all</a>
 <li><a href=info>info</a>
 </ul>];
+    print $Footer;
     exit;
   }
 } elsif (@path == 2 and $path[0] eq '' and $path[1] eq '_dummy_') {
