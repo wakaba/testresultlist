@@ -42,7 +42,9 @@ pmbp-install: pmbp-upgrade
             --create-perl-command-shortcut @prove \
             --create-perl-command-shortcut @plackup=perl\ modules/twiggy-packed/script/plackup
 
-deps-data:
+deps-data: local/data1/cvs/pub/testresults/data
+
+local/data1/cvs/pub/testresults/data:
 	mkdir -p local
 	$(WGET) -O local/cvs-pub.tar.gz https://www.dropbox.com/s/5oujy6bzvm176ih/cvs-pub.tar.gz?dl=1
 	cd local && tar zxf cvs-pub.tar.gz
