@@ -3,6 +3,7 @@ dependencies:
     - git config --global user.email "temp@circleci.test"
     - git config --global user.name "CircleCI"
     - make deps
+    - make deps-data
 test:
   override:
     - make test

@@ -19,10 +19,6 @@ else
 	$(MAKE) git-submodules
 endif
 	$(MAKE) pmbp-install
-ifdef PMBP_HEROKU_BUILDPACK
-else
-	$(MAKE) deps-data
-endif
 
 git-submodules:
 	$(GIT) submodule update --init
