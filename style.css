@@ -1,5 +1,4 @@
-@import 'https://suikaweb.herokuapp.com/www/style/html/xhtml';
-@import 'http://suika.suikawiki.org/www/style/html/xhtml';
+@import 'https://suika.suikawiki.org/www/style/html/xhtml';
 
 .PASS, .has {
   background-color: green;
@@ -28,7 +27,7 @@ th, td {
 
 /*
 
-Copyright 2008-2012 Wakaba <w@suika.fam.cx>.
+Copyright 2008-2015 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
