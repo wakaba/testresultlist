@@ -40,7 +40,7 @@
             }
          },
          "sleep 10",
-         "curl -f http://localhost:5114"
+         "curl -f http://localhost:5114/style"
       ]
    }
 }
