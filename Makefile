@@ -61,8 +61,8 @@ create-commit-for-heroku:
 	#git rm -r t_deps/modules
 	git rm .gitmodules
 	git rm modules/* --cached
-	rm -fr local/data1/cvs/pub/testresults/data/*,v
-	git add -f modules/*/* local/data1/cvs/pub/testresults/data
+	#rm -fr local/data1/cvs/pub/testresults/data/*,v
+	git add -f modules/*/* #local/data1/cvs/pub/testresults/data
 	git commit -m "for heroku"
 
 ## ------ Tests ------
