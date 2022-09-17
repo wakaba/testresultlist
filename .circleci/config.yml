@@ -1,0 +1,73 @@
+{
+   "jobs" : {
+      "build" : {
+         "environment" : {
+            "CIRCLE_ARTIFACTS" : "/tmp/circle-artifacts/build"
+         },
+         "machine" : {
+            "image" : "ubuntu-2004:202101-01"
+         },
+         "steps" : [
+            "checkout",
+            {
+               "run" : {
+                  "command" : "mkdir -p $CIRCLE_ARTIFACTS"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "make test-deps"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "make test"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "make deps-data"
+               }
+            },
+            {
+               "run" : {
+                  "background" : true,
+                  "command" : "./plackup -p 5114 -t Twiggy::Prefork bin/server.psgi"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "sleep 10"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "curl -f http://localhost:5114/style"
+               }
+            },
+            {
+               "store_artifacts" : {
+                  "path" : "/tmp/circle-artifacts/build"
+               }
+            },
+            {
+               "deploy" : {
+                  "command" : "if [ \u0022${CIRCLE_BRANCH}\u0022 == 'heroku' ]; then\u000Atrue\u000Amake deploy-heroku\u000Afi"
+               }
+            }
+         ]
+      }
+   },
+   "version" : 2,
+   "workflows" : {
+      "build" : {
+         "jobs" : [
+            {
+               "build" : {
+               }
+            }
+         ]
+      },
+      "version" : 2
+   }
+}
