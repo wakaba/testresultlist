@@ -23,7 +23,9 @@ endif
 
 deps-circleci: deps
 
-deps-docker: pmbp-install
+deps-docker: pmbp-install deps-cvs deps-data
+
+deps-cvs:
 	apt-get update
 	apt-get install -y rcs cvs
 

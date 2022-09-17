@@ -8,7 +8,7 @@
     "pmbp": 1,
     "merger": 1,
     "tests": [
-      "make deps-circleci deps-data",
+      "make deps-circleci",
       
       {"./plackup -p 5114 -t Twiggy::Prefork bin/server.psgi":
          {"background": true}},

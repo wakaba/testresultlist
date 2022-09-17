@@ -210,7 +210,7 @@
             },
             {
                "run" : {
-                  "command" : "make deps-circleci deps-data"
+                  "command" : "make deps-circleci"
                }
             },
             {
@@ -364,7 +364,7 @@
          "triggers" : [
             {
                "schedule" : {
-                  "cron" : "50 20 * * *",
+                  "cron" : "40 20 * * *",
                   "filters" : {
                      "branches" : {
                         "only" : [
