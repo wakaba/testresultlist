@@ -75,6 +75,11 @@ test-deps: deps
 test-main:
 	#$(PROVE) t/*.t
 
+## ------ Deployment ------
+
+deploy-master:
+	$(CURL) -sSf $$DEPLOY_KICK_URL
+
 always:
 
 ## License: Public Domain.
