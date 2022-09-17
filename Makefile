@@ -24,6 +24,8 @@ endif
 deps-circleci: deps
 
 deps-docker: pmbp-install
+	apt-get update
+	apt-get install -y rcs cvs
 
 git-submodules:
 	$(GIT) submodule update --init
